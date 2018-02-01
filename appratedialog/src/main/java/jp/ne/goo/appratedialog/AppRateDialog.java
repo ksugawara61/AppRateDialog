@@ -25,32 +25,32 @@ public class AppRateDialog {
     /**
      * 満足ヒアリングダイアログ用テキスト
      */
-    private static String satisfactionTitle = "アプリに満足していますか？";
-    private static String satisfactionMessage = "いつもアプリをご利用いただきありがとうございます。アプリの感想をお聞かせください。";
-    private static String satisfactionPositiveText = "はい";
-    private static String satisfactionNegativeText = "いいえ";
+    private static String satisfactionTitle = null;
+    private static String satisfactionMessage = null;
+    private static String satisfactionPositiveText = null;
+    private static String satisfactionNegativeText = null;
 
     /**
      * 意見ヒアリングダイアログ用テキスト
      */
-    private static String opinionTitle = "アプリについて";
-    private static String opinionMessage = "ご意見・ご要望をお聞かせください";
-    private static String opinionText = "要望を書く";
-    private static String opinionUri = "https://help.goo.ne.jp/cc/app/m/152800/";
+    private static String opinionTitle = null;
+    private static String opinionMessage = null;
+    private static String opinionText = null;
+    private static String opinionUri = null;
 
     /**
      * レーティングダイアログ用テキスト
      */
-    private static String reviewTitle = "アプリのレビュー";
-    private static String reviewMessage = "アプリをレビューしませんか？";
-    private static String reviewText = "レビューする";
-    private static String reviewUri = "market://details?id=jp.ne.goo.app.news";
+    private static String reviewTitle = null;
+    private static String reviewMessage = null;
+    private static String reviewText = null;
+    private static String reviewUri = null;
 
     /**
      * 共通テキスト
      */
-    private static String laterText = "後で";
-    private static String forbiddenText = "表示しない";
+    private static String laterText = null;
+    private static String forbiddenText = null;
 
     /**
      * 今後表示しないの表示フラグ
@@ -65,6 +65,23 @@ public class AppRateDialog {
      */
     private AppRateDialog(Context context) {
         this.context = context;
+
+        // テキストの初期化
+        satisfactionTitle = context.getString(R.string.satisfaction_title);
+        satisfactionMessage = context.getString(R.string.satisfaction_message);
+        satisfactionPositiveText = context.getString(R.string.satisfaction_positive_text);
+        satisfactionNegativeText = context.getString(R.string.satisfaction_negative_text);
+
+        opinionTitle = context.getString(R.string.opinion_title);
+        opinionMessage = context.getString(R.string.opinion_message);
+        opinionText = context.getString(R.string.opinion_text);
+
+        reviewTitle = context.getString(R.string.review_title);
+        reviewMessage = context.getString(R.string.review_message);
+        reviewText = context.getString(R.string.review_text);
+
+        laterText = context.getString(R.string.later_text);
+        forbiddenText = context.getString(R.string.forbidden_text);
     }
 
     public static synchronized AppRateDialog with(Context context) {
@@ -102,15 +119,6 @@ public class AppRateDialog {
                         showOpinionDialog(activity);
                     }
                 });
-
-        if (hasForbiddenText) {
-            builder.setNeutralButton(forbiddenText, new DialogInterface.OnClickListener() {
-                @Override
-                public void onClick(DialogInterface dialogInterface, int i) {
-                    // TODO 今後表示しない処理を実装
-                }
-            });
-        }
 
         builder.create().show();
 
@@ -367,6 +375,7 @@ public class AppRateDialog {
      * @param uriText URI
      */
     private static void startBrowse(Activity activity, String uriText) {
+        if (uriText == null) return;
         Uri uri = Uri.parse(uriText);
         Intent intent = new Intent(Intent.ACTION_VIEW, uri);
         try {

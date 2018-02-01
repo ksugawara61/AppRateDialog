@@ -1,3 +1,20 @@
 <resources>
     <string name="app_name">AppRateDialog</string>
+
+    <string name="satisfaction_title">アプリに満足していますか？</string>
+    <string name="satisfaction_message">いつもアプリをご利用いただきありがとうございます。アプリの感想をお聞かせください。</string>
+    <string name="satisfaction_positive_text">はい</string>
+    <string name="satisfaction_negative_text">いいえ</string>
+
+    <string name="opinion_title">ご意見・ご要望</string>
+    <string name="opinion_message">アプリについてご意見・ご要望をお聞かせください。</string>
+    <string name="opinion_text">要望を書く</string>
+
+    <string name="review_title">アプリのレビュー</string>
+    <string name="review_message">アプリをレビューしませんか？</string>
+    <string name="review_text">レビューする</string>
+
+    <string name="later_text">後で</string>
+    <string name="forbidden_text">今後表示しない</string>
+
 </resources>
