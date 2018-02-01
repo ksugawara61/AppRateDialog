@@ -14,7 +14,7 @@ import timber.log.Timber;
  * アプリのレビュー誘導用ダイアログライブラリ
  *
  * @author katsuya
- * @since 1.0.o
+ * @since 1.0.0
  */
 public class AppRateDialog {
 
