@@ -14,5 +14,7 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
         AppRateDialog.with(this);
+        AppRateDialog.showDialog(this);
+//        AppRateDialog.showRateDialog(this);
     }
 }
