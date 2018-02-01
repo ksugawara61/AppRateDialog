@@ -13,8 +13,11 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        AppRateDialog.with(this);
-        AppRateDialog.showDialog(this);
+        AppRateDialog.with(this)
+                .setSatisfactionTitle("hogehoge")
+                .setSatisfactionMessage("hogehoge2")
+                .setHasForbiddenText(false);
+        AppRateDialog.showSatisfactionDialog(this);
 //        AppRateDialog.showRateDialog(this);
     }
 }
