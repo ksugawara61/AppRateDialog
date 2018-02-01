@@ -15,6 +15,6 @@
     <string name="review_text">レビューする</string>
 
     <string name="later_text">後で</string>
-    <string name="forbidden_text">今後表示しない</string>
+    <string name="forbidden_text">表示しない</string>
 
 </resources>

@@ -104,7 +104,7 @@ public class AppRateDialog {
      */
     public static void showSatisfactionDialog(final Activity activity) {
 
-        AlertDialog.Builder builder = new AlertDialog.Builder(activity);
+        AlertDialog.Builder builder = new AlertDialog.Builder(activity, R.style.AppAlertDialogStyle);
         builder.setTitle(satisfactionTitle)
                 .setMessage(satisfactionMessage)
                 .setPositiveButton(satisfactionPositiveText, new DialogInterface.OnClickListener() {
@@ -132,7 +132,7 @@ public class AppRateDialog {
      */
     public static void showOpinionDialog(final Activity activity) {
 
-        AlertDialog.Builder builder = new AlertDialog.Builder(activity);
+        AlertDialog.Builder builder = new AlertDialog.Builder(activity, R.style.AppAlertDialogStyle);
         builder.setTitle(opinionTitle)
                 .setMessage(opinionMessage)
                 .setPositiveButton(opinionText, new DialogInterface.OnClickListener() {
@@ -164,7 +164,7 @@ public class AppRateDialog {
      */
     public static void showRateDialog(final Activity activity) {
 
-        AlertDialog.Builder builder = new AlertDialog.Builder(activity);
+        AlertDialog.Builder builder = new AlertDialog.Builder(activity, R.style.AppAlertDialogStyle);
         builder.setTitle(reviewTitle)
                 .setMessage(reviewMessage)
                 .setPositiveButton(reviewText, new DialogInterface.OnClickListener() {

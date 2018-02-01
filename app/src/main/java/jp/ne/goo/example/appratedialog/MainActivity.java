@@ -13,7 +13,9 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        AppRateDialog.with(this);
+        AppRateDialog.with(this)
+                .setOpinionUri("https://help.goo.ne.jp/cc/app/m/152800/")
+                .setReviewUri("market://details?id=jp.ne.goo.app.news");
         AppRateDialog.showSatisfactionDialog(this);
 //        AppRateDialog.showRateDialog(this);
     }
