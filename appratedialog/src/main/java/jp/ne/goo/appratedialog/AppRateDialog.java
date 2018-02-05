@@ -151,16 +151,25 @@ public class AppRateDialog {
                     .setPositiveButton(opinionText, new DialogInterface.OnClickListener() {
                         @Override
                         public void onClick(DialogInterface dialogInterface, int i) {
+                            // 今後表示しないフラグを trueに
+                            PreferenceHelper.setIsAllowed(activity, false);
                             startBrowse(activity, opinionUri);
                         }
                     })
-                    .setNegativeButton(laterText, null);
+                    .setNegativeButton(laterText, new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialogInterface, int i) {
+                            // 後でフラグを trueに
+                            PreferenceHelper.setIsLater(activity, true);
+                        }
+                    });
 
             if (hasForbiddenText) {
                 builder.setNeutralButton(forbiddenText, new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialogInterface, int i) {
-                        // TODO 今後表示しない処理を実装
+                        // 今後表示しないフラグを trueに
+                        PreferenceHelper.setIsAllowed(activity, false);
                     }
                 });
             }
@@ -185,16 +194,25 @@ public class AppRateDialog {
                     .setPositiveButton(reviewText, new DialogInterface.OnClickListener() {
                         @Override
                         public void onClick(DialogInterface dialogInterface, int i) {
+                            // 今後表示しないフラグを trueに
+                            PreferenceHelper.setIsAllowed(activity, false);
                             startBrowse(activity, reviewUri);
                         }
                     })
-                    .setNegativeButton(laterText, null);
+                    .setNegativeButton(laterText, new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialogInterface, int i) {
+                            // 後でフラグを trueに
+                            PreferenceHelper.setIsLater(activity, true);
+                        }
+                    });
 
             if (hasForbiddenText) {
                 builder.setNeutralButton(forbiddenText, new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialogInterface, int i) {
-                        // TODO 今後表示しない処理を実装
+                        // 今後表示しないフラグを trueに
+                        PreferenceHelper.setIsAllowed(activity, false);
                     }
                 });
             }
@@ -403,18 +421,23 @@ public class AppRateDialog {
 
         if (PreferenceHelper.getIsAllowed(context)) {
             int intervalCount = (launchCount - showDialogCount) % remindDialogInterval;
+            Timber.d("hogehoge2: " + intervalCount);
             if (PreferenceHelper.getIsLater(context) && (intervalCount == 0)) {
                 // 後でフラグ true でかつ起動回数が表示間隔と一致する場合
+                Timber.d("hogehoge: interval");
                 return true;
             } else if (launchCount >= showDialogCount) {
                 // 起動回数が起動回数の閾値以上の場合
+                Timber.d("hogehoge: first");
                 return true;
             } else {
+                Timber.d("hogehoge: none");
                 return false;
             }
         } else {
             // 表示フラグが falseの時（ストアへ誘導済み or 表示しないを選択）
             // ダイアログを表示しない
+            Timber.d("hogehoge: forbidden");
             return false;
         }
 
