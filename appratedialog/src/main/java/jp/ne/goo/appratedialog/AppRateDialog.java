@@ -97,6 +97,16 @@ public class AppRateDialog {
     }
 
     /**
+     * アプリ起動回数の追加
+     *
+     * @since 1.0.0
+     */
+    public void addLaunchCount() {
+        int launchCount = PreferenceHelper.getLaunchCount(context);
+        PreferenceHelper.setLaunchCount(context, launchCount + 1);
+    }
+
+    /**
      * 「満足していますか？」ダイアログを表示
      *
      * @param activity アクティビティ

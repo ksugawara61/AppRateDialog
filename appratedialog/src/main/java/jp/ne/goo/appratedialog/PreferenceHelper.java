@@ -4,6 +4,8 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.content.SharedPreferences.Editor;
 
+import timber.log.Timber;
+
 /**
  * アプリのレビュー誘導用ダイアログのデータ管理用
  *
@@ -119,6 +121,7 @@ public class PreferenceHelper {
     public static void setLaunchCount(Context context, int launchCount) {
         Editor editor = getPreferencesEditor(context);
         editor.putInt(PREF_LAUNCH_COUNT, launchCount);
+        editor.apply();
     }
 
     /**
