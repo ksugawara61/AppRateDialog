@@ -73,7 +73,7 @@ public class PreferenceHelper {
      * @since 1.0.0
      */
     public static int getShowDialogCount(Context context) {
-        return getPreferences(context).getInt(PREF_SHOW_DIALOG_COUNT, 0);
+        return getPreferences(context).getInt(PREF_SHOW_DIALOG_COUNT, 1);
     }
 
     /**
@@ -84,7 +84,7 @@ public class PreferenceHelper {
      * @since 1.0.0
      */
     public static int getRemindDialogInterval(Context context) {
-        return getPreferences(context).getInt(PREF_REMIND_DIALOG_INTERVAL, 0);
+        return getPreferences(context).getInt(PREF_REMIND_DIALOG_INTERVAL, 1);
     }
 
     /**
@@ -106,7 +106,7 @@ public class PreferenceHelper {
      * @since 1.0.0
      */
     public static boolean getIsAllowed(Context context) {
-        return getPreferences(context).getBoolean(PREF_IS_ALLOWED, false);
+        return getPreferences(context).getBoolean(PREF_IS_ALLOWED, true);
     }
 
     /**
@@ -130,6 +130,11 @@ public class PreferenceHelper {
      * @since 1.0.0
      */
     public static void setShowDialogCount(Context context, int showDialogCount) {
+        if (showDialogCount <= 0) {
+            // 0未満の数値の場合 1にする
+            showDialogCount = 1;
+        }
+
         Editor editor = getPreferencesEditor(context);
         editor.putInt(PREF_SHOW_DIALOG_COUNT, showDialogCount);
         editor.apply();
@@ -143,6 +148,11 @@ public class PreferenceHelper {
      * @since 1.0.0
      */
     public static void setRemindDialogInterval(Context context, int remindDialogInterval) {
+        if (remindDialogInterval <= 0) {
+            // 0未満の数値の場合 1にする
+            remindDialogInterval = 1;
+        }
+
         Editor editor = getPreferencesEditor(context);
         editor.putInt(PREF_REMIND_DIALOG_INTERVAL, remindDialogInterval);
         editor.apply();

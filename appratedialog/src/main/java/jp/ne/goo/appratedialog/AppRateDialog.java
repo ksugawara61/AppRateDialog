@@ -99,9 +99,10 @@ public class AppRateDialog {
     /**
      * アプリ起動回数の追加
      *
+     * @param context コンテキスト
      * @since 1.0.0
      */
-    public void addLaunchCount() {
+    public static void addLaunchCount(Context context) {
         int launchCount = PreferenceHelper.getLaunchCount(context);
         PreferenceHelper.setLaunchCount(context, launchCount + 1);
     }
@@ -114,24 +115,25 @@ public class AppRateDialog {
      */
     public static void showSatisfactionDialog(final Activity activity) {
 
-        AlertDialog.Builder builder = new AlertDialog.Builder(activity, R.style.AppAlertDialogStyle);
-        builder.setTitle(satisfactionTitle)
-                .setMessage(satisfactionMessage)
-                .setPositiveButton(satisfactionPositiveText, new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialogInterface, int i) {
-                        showRateDialog(activity);
-                    }
-                })
-                .setNegativeButton(satisfactionNegativeText, new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialogInterface, int i) {
-                        showOpinionDialog(activity);
-                    }
-                });
+        if (isShowDialog(activity)) {
+            AlertDialog.Builder builder = new AlertDialog.Builder(activity, R.style.AppAlertDialogStyle);
+            builder.setTitle(satisfactionTitle)
+                    .setMessage(satisfactionMessage)
+                    .setPositiveButton(satisfactionPositiveText, new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialogInterface, int i) {
+                            showRateDialog(activity);
+                        }
+                    })
+                    .setNegativeButton(satisfactionNegativeText, new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialogInterface, int i) {
+                            showOpinionDialog(activity);
+                        }
+                    });
 
-        builder.create().show();
-
+            builder.create().show();
+        }
     }
 
     /**
@@ -142,27 +144,29 @@ public class AppRateDialog {
      */
     public static void showOpinionDialog(final Activity activity) {
 
-        AlertDialog.Builder builder = new AlertDialog.Builder(activity, R.style.AppAlertDialogStyle);
-        builder.setTitle(opinionTitle)
-                .setMessage(opinionMessage)
-                .setPositiveButton(opinionText, new DialogInterface.OnClickListener() {
+        if (isShowDialog(activity)) {
+            AlertDialog.Builder builder = new AlertDialog.Builder(activity, R.style.AppAlertDialogStyle);
+            builder.setTitle(opinionTitle)
+                    .setMessage(opinionMessage)
+                    .setPositiveButton(opinionText, new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialogInterface, int i) {
+                            startBrowse(activity, opinionUri);
+                        }
+                    })
+                    .setNegativeButton(laterText, null);
+
+            if (hasForbiddenText) {
+                builder.setNeutralButton(forbiddenText, new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialogInterface, int i) {
-                        startBrowse(activity, opinionUri);
+                        // TODO 今後表示しない処理を実装
                     }
-                })
-                .setNegativeButton(laterText, null);
+                });
+            }
 
-        if (hasForbiddenText) {
-            builder.setNeutralButton(forbiddenText, new DialogInterface.OnClickListener() {
-                @Override
-                public void onClick(DialogInterface dialogInterface, int i) {
-                    // TODO 今後表示しない処理を実装
-                }
-            });
+            builder.create().show();
         }
-
-        builder.create().show();
 
     }
 
@@ -174,27 +178,29 @@ public class AppRateDialog {
      */
     public static void showRateDialog(final Activity activity) {
 
-        AlertDialog.Builder builder = new AlertDialog.Builder(activity, R.style.AppAlertDialogStyle);
-        builder.setTitle(reviewTitle)
-                .setMessage(reviewMessage)
-                .setPositiveButton(reviewText, new DialogInterface.OnClickListener() {
+        if (isShowDialog(activity)) {
+            AlertDialog.Builder builder = new AlertDialog.Builder(activity, R.style.AppAlertDialogStyle);
+            builder.setTitle(reviewTitle)
+                    .setMessage(reviewMessage)
+                    .setPositiveButton(reviewText, new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialogInterface, int i) {
+                            startBrowse(activity, reviewUri);
+                        }
+                    })
+                    .setNegativeButton(laterText, null);
+
+            if (hasForbiddenText) {
+                builder.setNeutralButton(forbiddenText, new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialogInterface, int i) {
-                        startBrowse(activity, reviewUri);
+                        // TODO 今後表示しない処理を実装
                     }
-                })
-                .setNegativeButton(laterText, null);
+                });
+            }
 
-        if (hasForbiddenText) {
-            builder.setNeutralButton(forbiddenText, new DialogInterface.OnClickListener() {
-                @Override
-                public void onClick(DialogInterface dialogInterface, int i) {
-                    // TODO 今後表示しない処理を実装
-                }
-            });
+            builder.create().show();
         }
-
-        builder.create().show();
 
     }
 
@@ -379,10 +385,47 @@ public class AppRateDialog {
     }
 
     /**
+     * ダイアログを表示するかの判定フラグ
+     *
+     * @param context コンテキスト
+     * @return 判定結果
+     * @since 1.0.0
+     */
+    private static boolean isShowDialog(Context context) {
+
+        int launchCount = PreferenceHelper.getLaunchCount(context);
+        int remindDialogInterval = PreferenceHelper.getRemindDialogInterval(context);
+        int showDialogCount = PreferenceHelper.getShowDialogCount(context);
+
+        Timber.d("hogehoge1: " + launchCount);
+        Timber.d("hogehoge2: " + remindDialogInterval);
+        Timber.d("hogehoge2: " + showDialogCount);
+
+        if (PreferenceHelper.getIsAllowed(context)) {
+            int intervalCount = (launchCount - showDialogCount) % remindDialogInterval;
+            if (PreferenceHelper.getIsLater(context) && (intervalCount == 0)) {
+                // 後でフラグ true でかつ起動回数が表示間隔と一致する場合
+                return true;
+            } else if (launchCount >= showDialogCount) {
+                // 起動回数が起動回数の閾値以上の場合
+                return true;
+            } else {
+                return false;
+            }
+        } else {
+            // 表示フラグが falseの時（ストアへ誘導済み or 表示しないを選択）
+            // ダイアログを表示しない
+            return false;
+        }
+
+    }
+
+    /**
      * ブラウザを起動する
      *
      * @param activity アクティビティ
      * @param uriText URI
+     * @since 1.0.0
      */
     private static void startBrowse(Activity activity, String uriText) {
         if (uriText == null) return;

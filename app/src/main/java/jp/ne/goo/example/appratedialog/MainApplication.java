@@ -24,8 +24,7 @@ public class MainApplication extends Application {
         // 初期設定（Applicationクラス内で設定）
         AppRateDialog.with(this)
                 .setOpinionUri("https://help.goo.ne.jp/cc/app/m/152800/")
-                .setReviewUri("market://details?id=jp.ne.goo.app.news")
-                .addLaunchCount();
+                .setReviewUri("market://details?id=jp.ne.goo.app.news");
     }
 
 }
