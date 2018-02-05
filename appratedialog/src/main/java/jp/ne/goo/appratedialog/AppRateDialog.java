@@ -7,8 +7,7 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.net.Uri;
 import android.support.v7.app.AlertDialog;
-
-import timber.log.Timber;
+import android.util.Log;
 
 /**
  * アプリのレビュー誘導用ダイアログライブラリ
@@ -85,9 +84,6 @@ public class AppRateDialog {
     }
 
     public static synchronized AppRateDialog with(Context context) {
-
-        // 後で削除
-        Timber.plant(new Timber.DebugTree());
 
         if (singleton == null) {
             singleton = new AppRateDialog(context);
@@ -403,6 +399,30 @@ public class AppRateDialog {
     }
 
     /**
+     * ダイアログ表示カウントのセッター
+     *
+     * @param showDialogCount 表示カウント
+     * @return this
+     * @since 1.0.0
+     */
+    public AppRateDialog setShowDialogCount(int showDialogCount) {
+        PreferenceHelper.setShowDialogCount(context, showDialogCount);
+        return this;
+    }
+
+    /**
+     * ダイアログのリマインド表示間隔のセッター
+     *
+     * @param remindDialogInterval リマインド表示間隔
+     * @return this
+     * @since 1.0.0
+     */
+    public AppRateDialog setRemindDialogInterval(int remindDialogInterval) {
+        PreferenceHelper.setRemindDialogInterval(context, remindDialogInterval);
+        return this;
+    }
+
+    /**
      * ダイアログを表示するかの判定フラグ
      *
      * @param context コンテキスト
@@ -415,29 +435,18 @@ public class AppRateDialog {
         int remindDialogInterval = PreferenceHelper.getRemindDialogInterval(context);
         int showDialogCount = PreferenceHelper.getShowDialogCount(context);
 
-        Timber.d("hogehoge1: " + launchCount);
-        Timber.d("hogehoge2: " + remindDialogInterval);
-        Timber.d("hogehoge2: " + showDialogCount);
-
         if (PreferenceHelper.getIsAllowed(context)) {
             int intervalCount = (launchCount - showDialogCount) % remindDialogInterval;
-            Timber.d("hogehoge2: " + intervalCount);
-            if (PreferenceHelper.getIsLater(context) && (intervalCount == 0)) {
-                // 後でフラグ true でかつ起動回数が表示間隔と一致する場合
-                Timber.d("hogehoge: interval");
-                return true;
-            } else if (launchCount >= showDialogCount) {
-                // 起動回数が起動回数の閾値以上の場合
-                Timber.d("hogehoge: first");
-                return true;
+            if (PreferenceHelper.getIsLater(context)) {
+                // 後でフラグ true でかつ起動回数が表示間隔と一致する場合ダイアログを表示
+                return intervalCount == 0;
             } else {
-                Timber.d("hogehoge: none");
-                return false;
+                // 起動回数が起動回数の閾値以上の場合ダイアログを表示
+                return launchCount >= showDialogCount;
             }
         } else {
             // 表示フラグが falseの時（ストアへ誘導済み or 表示しないを選択）
             // ダイアログを表示しない
-            Timber.d("hogehoge: forbidden");
             return false;
         }
 
@@ -457,7 +466,7 @@ public class AppRateDialog {
         try {
             activity.startActivity(intent);
         } catch (ActivityNotFoundException e) {
-            Timber.e(e.getMessage());
+            Log.e("startBrowse", e.getMessage());
         }
     }
 
