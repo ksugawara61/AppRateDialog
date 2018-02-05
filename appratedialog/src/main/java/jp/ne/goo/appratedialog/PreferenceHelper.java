@@ -4,8 +4,6 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.content.SharedPreferences.Editor;
 
-import timber.log.Timber;
-
 /**
  * アプリのレビュー誘導用ダイアログのデータ管理用
  *
@@ -134,6 +132,7 @@ public class PreferenceHelper {
     public static void setShowDialogCount(Context context, int showDialogCount) {
         Editor editor = getPreferencesEditor(context);
         editor.putInt(PREF_SHOW_DIALOG_COUNT, showDialogCount);
+        editor.apply();
     }
 
     /**
@@ -146,6 +145,7 @@ public class PreferenceHelper {
     public static void setRemindDialogInterval(Context context, int remindDialogInterval) {
         Editor editor = getPreferencesEditor(context);
         editor.putInt(PREF_REMIND_DIALOG_INTERVAL, remindDialogInterval);
+        editor.apply();
     }
 
     /**
@@ -158,6 +158,7 @@ public class PreferenceHelper {
     public static void setIsLater(Context context, boolean isLater) {
         Editor editor = getPreferencesEditor(context);
         editor.putBoolean(PREF_IS_LATER, isLater);
+        editor.apply();
     }
 
     /**
@@ -170,6 +171,7 @@ public class PreferenceHelper {
     public static void setIsAllowed(Context context, boolean isAllowed) {
         Editor editor = getPreferencesEditor(context);
         editor.putBoolean(PREF_IS_ALLOWED, isAllowed);
+        editor.apply();
     }
 
     /**
